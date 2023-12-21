@@ -6,4 +6,7 @@ LISTINGS_MEDIA = 'listings'
 
 
 def listing_images(instance, filename):
-    return os.path.join(LISTINGS_MEDIA, slugify(instance.title), slugify(filename))
+    destination = slugify(instance.title)
+    name, ext = filename.split('.')
+    filename = "%s.%s" % (slugify(name), ext)
+    return os.path.join(LISTINGS_MEDIA, destination, filename)

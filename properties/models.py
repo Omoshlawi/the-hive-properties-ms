@@ -46,8 +46,15 @@ def update_slug_on_save(sender, instance, **kwargs):
     """
     Signal receiver to update the slug after a Property instance is saved.
     """
+    # Disconnect the post_save signal temporarily
+    post_save.disconnect(update_slug_on_save, sender=Property)
+
+    # Update the slug
     instance.slug = slugify(f"{instance.title}-{instance.id}")
     instance.save(update_fields=['slug'])
+
+    # Reconnect the post_save signal
+    post_save.connect(update_slug_on_save, sender=Property)
 
 
 class PropertyImage(ImageBaseModel):
@@ -69,7 +76,6 @@ class PropertyAttribute(models.Model):
 
 
 class Location(models.Model):
-    location_id = models.AutoField(primary_key=True)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)

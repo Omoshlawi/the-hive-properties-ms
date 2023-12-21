@@ -2,8 +2,11 @@ import os
 
 from django.utils.text import slugify
 
-GROUPS_MEDIA = 'listings'
+GROUPS_MEDIA = 'groups'
 
 
 def group_images(instance, filename):
-    return os.path.join(GROUPS_MEDIA, slugify(instance.title), slugify(filename))
+    destination = slugify(instance.title)
+    name, ext = filename.split('.')
+    filename = "%s.%s" % (slugify(name), ext)
+    return os.path.join(GROUPS_MEDIA, destination, filename)

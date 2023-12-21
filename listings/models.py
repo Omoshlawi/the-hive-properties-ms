@@ -1,5 +1,8 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
+from django.utils.text import slugify
 from taggit.managers import TaggableManager
 
 from core.models import PublishableBaseModel, ImageBaseModel
@@ -29,6 +32,22 @@ class Listing(PublishableBaseModel):
 
     def __str__(self):
         return f"{self.title} image"
+
+
+@receiver(post_save, sender=Listing)
+def update_slug_on_save(sender, instance, **kwargs):
+    """
+    Signal receiver to update the slug after a Property instance is saved.
+    """
+    # Disconnect the post_save signal temporarily
+    post_save.disconnect(update_slug_on_save, sender=Listing)
+
+    # Update the slug
+    instance.slug = slugify(f"{instance.title}-{instance.id}")
+    instance.save(update_fields=['slug'])
+
+    # Reconnect the post_save signal
+    post_save.connect(update_slug_on_save, sender=Listing)
 
 
 class ListingProperty(models.Model):
@@ -84,7 +103,6 @@ class SaleListing(models.Model):
     )
     closing_date = models.DateField(null=True, blank=True)
     mortgage_options = models.TextField(null=True, blank=True)
-
 
     def __str__(self):
         return f"{self.listing.title} Sales"

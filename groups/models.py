@@ -1,5 +1,8 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
+from django.utils.text import slugify
 from taggit.managers import TaggableManager
 
 from core.models import PublishableBaseModel
@@ -19,6 +22,22 @@ class Group(PublishableBaseModel):
     #     amenities
     def __str__(self):
         return self.title
+
+
+@receiver(post_save, sender=Group)
+def update_slug_on_save(sender, instance, **kwargs):
+    """
+    Signal receiver to update the slug after a Property instance is saved.
+    """
+    # Disconnect the post_save signal temporarily
+    post_save.disconnect(update_slug_on_save, sender=Group)
+
+    # Update the slug
+    instance.slug = slugify(f"{instance.title}-{instance.id}")
+    instance.save(update_fields=['slug'])
+
+    # Reconnect the post_save signal
+    post_save.connect(update_slug_on_save, sender=Group)
 
 
 class GroupProperties(PublishableBaseModel):
