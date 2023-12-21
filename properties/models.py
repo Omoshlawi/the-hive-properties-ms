@@ -23,7 +23,8 @@ class Property(PublishableBaseModel):
     )
     slug = models.SlugField(unique=True, db_index=True)
     description = models.TextField(null=True, blank=True)
-    sqft_size = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    sqft_size = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True,
+                                    help_text="Size in square foots")
     date_build = models.DateField(null=True, blank=True)
     amenities = models.TextField(null=True, blank=True, help_text="Comma separated amenities")
     location = models.ForeignKey("properties.Location", on_delete=models.CASCADE, related_name='properties')

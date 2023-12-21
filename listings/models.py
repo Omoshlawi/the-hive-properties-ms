@@ -28,7 +28,7 @@ class Listing(PublishableBaseModel):
         ordering = ('-created_at',)
 
     def __str__(self):
-        return f"{self.listing.title} image"
+        return f"{self.title} image"
 
 
 class ListingProperty(models.Model):
@@ -48,6 +48,9 @@ class ListingProperty(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.listing.title}-{self.property.title}"
+
     class Meta:
         ordering = ('-created_at',)
         verbose_name_plural = "Listing Properties"
@@ -62,6 +65,9 @@ class RentalListing(models.Model):
     listing = models.ForeignKey("listings.Listing", on_delete=models.CASCADE, related_name='rentals')
     deposit_required = models.DecimalField(max_digits=10, decimal_places=2)
     renewal_interval = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.listing.title} Rentals"
 
 
 class SaleListing(models.Model):
@@ -78,3 +84,7 @@ class SaleListing(models.Model):
     )
     closing_date = models.DateField(null=True, blank=True)
     mortgage_options = models.TextField(null=True, blank=True)
+
+
+    def __str__(self):
+        return f"{self.listing.title} Sales"

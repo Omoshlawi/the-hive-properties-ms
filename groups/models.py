@@ -15,7 +15,10 @@ class Group(PublishableBaseModel):
     description = models.TextField(null=True, blank=True)
     tags = TaggableManager()
     cover_image = models.ImageField(upload_to=group_images, null=True, blank=True)
-#     amenities
+
+    #     amenities
+    def __str__(self):
+        return self.title
 
 
 class GroupProperties(PublishableBaseModel):
