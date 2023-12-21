@@ -17,10 +17,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('groups/', include('groups.urls', namespace='groups')),
+    path('properties/', include('properties.urls', namespace='properties')),
+    path('', include('core.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

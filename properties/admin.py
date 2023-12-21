@@ -16,9 +16,15 @@ class PropertyAttributeInline(admin.TabularInline):
 
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
-    list_display = ("title", 'slug', 'sqft_size', 'date_build', 'amenities', 'location')
+    list_display = ("title", 'slug', 'sqft_size', 'date_build', 'amenities', 'location', 'type_list')
     inlines = [PropertyAttributeInline, PropertyImagesInline]
     prepopulated_fields = {'slug': ('title',)}
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('type')
+
+    def type_list(self, obj):
+        return u", ".join(o.name for o in obj.type.all())
 
 
 class PropertiesInline(admin.TabularInline):
