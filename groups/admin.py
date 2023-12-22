@@ -1,13 +1,13 @@
 from django.contrib import admin
 
-from groups.models import Group, GroupProperties
+from groups.models import Group, PropertyGroupMemberShip
 
 
 # Register your models here.
 
 
 class GroupPropertiesInline(admin.TabularInline):
-    model = GroupProperties
+    model = PropertyGroupMemberShip
 
 
 @admin.register(Group)

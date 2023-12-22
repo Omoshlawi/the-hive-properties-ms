@@ -6,7 +6,7 @@ app_name = "groups"
 
 router = routers.DefaultRouter()
 
-router.register(prefix="groups", viewset=views.GroupViewSet, basename="group")
-router.register(prefix="group-subscriptions", viewset=views.GroupPropertiesViewSet, basename="group-properties")
+router.register(prefix="property-membership", viewset=views.GroupPropertiesViewSet, basename="group-properties")
+router.register(prefix="", viewset=views.GroupViewSet, basename="group")
 
 urlpatterns = router.urls

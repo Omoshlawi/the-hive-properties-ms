@@ -2,8 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import viewsets
-from .models import Group, GroupProperties
-from .serializers import GroupSerializer ,GroupPropertiesSerializer, GroupWithPropertiesSerializer
+from .models import Group, PropertyGroupMemberShip
+from .serializers import GroupSerializer ,PropertyGroupMemberShipSerializer, GroupWithPropertiesSerializer
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -14,5 +14,5 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 class GroupPropertiesViewSet(viewsets.ModelViewSet):
-    queryset = GroupProperties.objects.all()
-    serializer_class = GroupPropertiesSerializer
+    queryset = PropertyGroupMemberShip.objects.all()
+    serializer_class = PropertyGroupMemberShipSerializer

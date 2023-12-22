@@ -40,9 +40,9 @@ def update_slug_on_save(sender, instance, **kwargs):
     post_save.connect(update_slug_on_save, sender=Group)
 
 
-class GroupProperties(PublishableBaseModel):
-    group = models.ForeignKey('groups.Group', on_delete=models.CASCADE, related_name='properties')
-    property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name='groups')
+class PropertyGroupMemberShip(PublishableBaseModel):
+    group = models.ForeignKey('groups.Group', on_delete=models.CASCADE, related_name='memberships')
+    property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name='memberships')
     date_joined = models.DateTimeField(default=timezone.now)
     notes = models.TextField(null=True, blank=True)
 

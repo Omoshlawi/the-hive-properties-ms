@@ -22,6 +22,11 @@ class PropertiesSerializer(serializers.HyperlinkedModelSerializer):
     images = PropertyImageSerializer(many=True, read_only=True)
     attributes = PropertyAttributeSerializer(many=True, read_only=True)
     property_amenities = serializers.SerializerMethodField()
+    groups_subscriptions = serializers.SerializerMethodField()
+
+    def get_groups_subscriptions(self, instance):
+        from groups.serializers import  NestedPropertyGroupMemberShipSerializer
+        return NestedPropertyGroupMemberShipSerializer(context=self.context, instance=instance.memberships.all(), many=True).data
 
     def get_property_amenities(self, instance):
         return [] if not instance.amenities else list(
@@ -36,7 +41,7 @@ class PropertiesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Property
         fields = [
-            'id', 'url', "title", 'slug', 'sqft_size', 'date_build',
+            'id', 'url', "title", 'slug', 'sqft_size', 'date_build', 'groups_subscriptions',
             'type', 'description', 'property_location', 'images', 'attributes',
             'property_amenities', 'amenities', 'location', 'created_at', 'updated_at',
         ]
